@@ -18,7 +18,7 @@ public class LoginTest extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
         
         // Use standard valid credentials for the-internet demo website
-        DashboardPage dashboardPage = loginPage.login("tomsmith", "SuperSecretPassword!");
+        DashboardPage dashboardPage = loginPage.login("weavers_test@norleegroup.com", "weavers_test@norleegroup.com");
         
         logger.info("Verifying login results...");
         Assert.assertTrue(dashboardPage.isLogoutButtonDisplayed(), "Dashboard logout button is not displayed");

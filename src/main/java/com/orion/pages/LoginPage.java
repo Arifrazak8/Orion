@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 public class LoginPage extends BasePage {
 
     // Locators for login page elements
-    private final By usernameField = By.id("username");
+    private final By usernameField = By.xpath("//input[@type='submit']");
     private final By passwordField = By.id("password");
     private final By loginButton = By.cssSelector("button[type='submit']");
     private final By flashMessage = By.id("flash");

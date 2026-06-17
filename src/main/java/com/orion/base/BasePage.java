@@ -82,13 +82,13 @@ public class BasePage {
     /**
      * Checks if the element is currently visible on the page.
      */
-    public boolean isDisplayed(By locator) {
+    public boolean isDisplayed(By internetSecureAreaLogoutLink) {
         try {
-            boolean displayed = waitForVisibility(locator).isDisplayed();
-            logger.info("Element {} is displayed: {}", locator, displayed);
+            boolean displayed = waitForVisibility(internetSecureAreaLogoutLink).isDisplayed();
+            logger.info("Element {} is displayed: {}", internetSecureAreaLogoutLink, displayed);
             return displayed;
         } catch (Exception e) {
-            logger.warn("Element {} is not displayed/found within the timeout", locator);
+            logger.warn("Element {} is not displayed/found within the timeout", internetSecureAreaLogoutLink);
             return false;
         }
     }
