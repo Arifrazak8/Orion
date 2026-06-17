@@ -1,15 +1,21 @@
 package com.orion.pages;
 
 import com.orion.base.BasePage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class DashboardPage extends BasePage {
 
     // Locators for dashboard elements
-    private final By secureAreaHeader = By.cssSelector("h2");
-    private final By logoutButton = By.cssSelector("a[href='/logout']");
-    private final By flashMessage = By.id("flash");
+    @FindBy(css = "h2")
+    private WebElement secureAreaHeader;
+
+    @FindBy(css = "a[href='/logout']")
+    private WebElement logoutButton;
+
+    @FindBy(id = "flash")
+    private WebElement flashMessage;
 
     public DashboardPage(WebDriver driver) {
         super(driver);

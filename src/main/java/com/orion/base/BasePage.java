@@ -19,6 +19,7 @@ public class BasePage {
         this.driver = driver;
         int explicitWaitSeconds = Integer.parseInt(ConfigReader.getProperty("explicit.wait", "15"));
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitSeconds));
+        org.openqa.selenium.support.PageFactory.initElements(driver, this);
     }
 
     /**
@@ -30,11 +31,27 @@ public class BasePage {
     }
 
     /**
+     * Wait for element to be visible on the DOM and viewport.
+     */
+    protected WebElement waitForVisibility(WebElement element) {
+        logger.debug("Waiting for visibility of element: {}", element);
+        return wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    /**
      * Wait for element to be clickable.
      */
     protected WebElement waitForClickability(By locator) {
         logger.debug("Waiting for clickability of element: {}", locator);
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    /**
+     * Wait for element to be clickable.
+     */
+    protected WebElement waitForClickability(WebElement element) {
+        logger.debug("Waiting for clickability of element: {}", element);
+        return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     /**
@@ -46,6 +63,19 @@ public class BasePage {
             logger.info("Clicked on element: {}", locator);
         } catch (Exception e) {
             logger.error("Failed to click on element: {}", locator, e);
+            throw e;
+        }
+    }
+
+    /**
+     * Wrapper click method with built-in logging and wait.
+     */
+    public void click(WebElement element) {
+        try {
+            waitForClickability(element).click();
+            logger.info("Clicked on element: {}", element);
+        } catch (Exception e) {
+            logger.error("Failed to click on element: {}", element, e);
             throw e;
         }
     }
@@ -66,6 +96,21 @@ public class BasePage {
     }
 
     /**
+     * Wrapper sendKeys method with built-in logging and wait.
+     */
+    public void sendKeys(WebElement element, String text) {
+        try {
+            WebElement el = waitForVisibility(element);
+            el.clear();
+            el.sendKeys(text);
+            logger.info("Typed '{}' into element: {}", text, element);
+        } catch (Exception e) {
+            logger.error("Failed to type text into element: {}", element, e);
+            throw e;
+        }
+    }
+
+    /**
      * Wrapper getText method with built-in logging and wait.
      */
     public String getText(By locator) {
@@ -80,6 +125,20 @@ public class BasePage {
     }
 
     /**
+     * Wrapper getText method with built-in logging and wait.
+     */
+    public String getText(WebElement element) {
+        try {
+            String text = waitForVisibility(element).getText();
+            logger.info("Retrieved text '{}' from element: {}", text, element);
+            return text;
+        } catch (Exception e) {
+            logger.error("Failed to retrieve text from element: {}", element, e);
+            throw e;
+        }
+    }
+
+    /**
      * Checks if the element is currently visible on the page.
      */
     public boolean isDisplayed(By locator) {
@@ -89,6 +148,20 @@ public class BasePage {
             return displayed;
         } catch (Exception e) {
             logger.warn("Element {} is not displayed/found within the timeout", locator);
+            return false;
+        }
+    }
+
+    /**
+     * Checks if the element is currently visible on the page.
+     */
+    public boolean isDisplayed(WebElement element) {
+        try {
+            boolean displayed = waitForVisibility(element).isDisplayed();
+            logger.info("Element {} is displayed: {}", element, displayed);
+            return displayed;
+        } catch (Exception e) {
+            logger.warn("Element {} is not displayed/found within the timeout", element);
             return false;
         }
     }
