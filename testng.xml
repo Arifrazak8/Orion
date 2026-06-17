@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Orion CRM Test Automation Suite">
+    
+    <!-- Register the custom ExtentReports listener -->
+    <listeners>
+        <listener class-name="com.orion.utils.ExtentReportManager"/>
+    </listeners>
+    
+    <!-- Define the test execution block -->
+    <test name="Functional Login Regression Tests">
+        <classes>
+            <class name="com.orion.tests.LoginTest"/>
+        </classes>
+    </test>
+</suite>
