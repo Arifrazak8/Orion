@@ -13,4 +13,11 @@
             <class name="com.orion.tests.LoginTest"/>
         </classes>
     </test>
+
+    <!-- Database vs UI Validation Tests -->
+    <test name="Database Validation Tests">
+        <classes>
+            <class name="com.orion.tests.DatabaseValidationTest"/>
+        </classes>
+    </test>
 </suite>

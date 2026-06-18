@@ -83,18 +83,4 @@ public class LoginPage extends BasePage {
         clickYesButton();
         return new DashboardPage(driver);
     }
-
-    /**
-     * Gets the text of the flash error/success message alert.
-     */
-    public String getFlashMessageText() {
-        return getText(flashMessage);
-    }
-
-    /**
-     * Checks if the flash message alert is displayed.
-     */
-    public boolean isFlashMessageDisplayed() {
-        return isDisplayed(flashMessage);
-    }
 }
