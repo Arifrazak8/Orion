@@ -37,7 +37,8 @@ public class TableUtils {
     }
 
     /**
-     * Locates a specific cell by row name (matched against the 1st column) and column name.
+     * Locates a specific cell by row name (matched against the 1st column) and
+     * column name.
      */
     private WebElement getCell(String rowName, String columnName) {
         int colIndex = getColumnIndex(columnName);
@@ -62,7 +63,7 @@ public class TableUtils {
     public Map<String, String> getRowData(String rowName) {
         List<WebElement> headers = tableElement.findElements(By.xpath(".//thead//th | .//thead//td"));
         Map<String, String> rowData = new LinkedHashMap<>();
-        
+
         for (int i = 0; i < headers.size(); i++) {
             String colName = headers.get(i).getText().trim();
             if (!colName.isEmpty()) {
@@ -105,7 +106,8 @@ public class TableUtils {
     }
 
     /**
-     * Reads the entire table body into a nested Map mapping RowName -> (ColumnName -> CellValue).
+     * Reads the entire table body into a nested Map mapping RowName -> (ColumnName
+     * -> CellValue).
      */
     public Map<String, Map<String, String>> getTableData() {
         Map<String, Map<String, String>> tableData = new LinkedHashMap<>();
@@ -128,7 +130,7 @@ public class TableUtils {
             for (Map.Entry<String, String> colEntry : rowEntry.getValue().entrySet()) {
                 String columnName = colEntry.getKey();
                 String expectedValue = colEntry.getValue();
-                
+
                 String actualValue = getCellValue(rowName, columnName);
                 if (!actualValue.equals(expectedValue)) {
                     throw new AssertionError(String.format(
