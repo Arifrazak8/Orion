@@ -67,19 +67,19 @@ public class PivotReportPage extends BasePage {
     private WebElement logoutBtn;
 
     // Report Filters
-    @FindBy(xpath = "//select[@wire:model='selectedCompanies']")
+    @FindBy(css = "select[wire\\:model='selectedCompanies']")
     private WebElement businessUnitSelect;
 
-    @FindBy(xpath = "//select[@wire:model='selectedDurationType']")
+    @FindBy(css = "select[wire\\:model='selectedDurationType']")
     private WebElement durationSelect;
 
     @FindBy(id = "generate-report")
     private WebElement generateReportBtn;
 
-    @FindBy(xpath = "//a[@wire:click='clearFilter()']")
+    @FindBy(css = "a[wire\\:click='clearFilter()']")
     private WebElement clearFilterBtn;
 
-    @FindBy(xpath = "//a[@wire:click='setDefaultFilter()']")
+    @FindBy(css = "a[wire\\:click='setDefaultFilter()']")
     private WebElement defaultFilterBtn;
 
     // Toggles
@@ -108,7 +108,7 @@ public class PivotReportPage extends BasePage {
     @FindBy(id = "userListFilterBtn")
     private WebElement keywordSearchBtn;
 
-    @FindBy(xpath = "//a[contains(@wire:click, 'exportBid')]")
+    @FindBy(css = "a[wire\\:click*='exportBid']")
     private WebElement exportToExcelBtn;
 
     @FindBy(xpath = "//button[text()='Select Columns']")
@@ -122,6 +122,12 @@ public class PivotReportPage extends BasePage {
 
     @FindBy(xpath = "//table[contains(@class, 'weighted-table')]")
     private WebElement weightedTable;
+
+    @FindBy(xpath = "//table[descendant::tr[@id='positive-footer-label']]")
+    private WebElement positiveTable;
+
+    @FindBy(xpath = "//table[descendant::tr[@id='negative-footer-label']]")
+    private WebElement negativeTable;
 
     // Dynamic locators
     private String businessUnitTabXpath = "//a[contains(normalize-space(), '%s')]";
@@ -155,6 +161,14 @@ public class PivotReportPage extends BasePage {
 
     public TableUtils getWeightedTable() {
         return new TableUtils(driver, weightedTable);
+    }
+
+    public TableUtils getPositiveTable() {
+        return new TableUtils(driver, positiveTable);
+    }
+
+    public TableUtils getNegativeTable() {
+        return new TableUtils(driver, negativeTable);
     }
 
     public void clickGenerateReport() {
