@@ -174,4 +174,20 @@ public class BasePage {
         logger.info("Current Page Title: {}", title);
         return title;
     }
+
+    /**
+     * Checks if the user is currently logged in.
+     * 
+     * @return true if the user is logged in, false if not (e.g. on the login page)
+     */
+    public boolean isLoggedIn() {
+        try {
+            String currentUrl = driver.getCurrentUrl();
+            logger.info("Current URL check for login status: {}", currentUrl);
+            return currentUrl != null && !currentUrl.contains("/login");
+        } catch (Exception e) {
+            logger.warn("Failed to check if user is logged in. Assuming not logged in. Error: {}", e.getMessage());
+            return false;
+        }
+    }
 }
