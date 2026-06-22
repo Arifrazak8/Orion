@@ -239,9 +239,9 @@ public class DatabaseUtils {
      */
     private void validateSelectOnly(String sql) {
         String trimmed = sql.trim().toUpperCase();
-        if (!trimmed.startsWith("SELECT")) {
+        if (!trimmed.startsWith("SELECT") && !trimmed.startsWith("WITH")) {
             throw new UnsupportedOperationException(
-                "DatabaseUtils is READ-ONLY. Only SELECT queries are permitted. Got: " + sql);
+                "DatabaseUtils is READ-ONLY. Only SELECT and WITH queries are permitted. Got: " + sql);
         }
     }
 }

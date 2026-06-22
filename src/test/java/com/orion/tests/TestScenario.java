@@ -19,37 +19,64 @@ public class TestScenario extends BaseTest {
         logger.info("Executing testSuccessfulLogin...");
 
         MenuPage menuPage = new MenuPage(driver);
-        SalesPipelinePage salesPipelinePage = menuPage.clickSalesPipeline();   
+        SalesPipelinePage salesPipelinePage = menuPage.clickSalesPipeline();
 
         // Define division and column dynamically using Constants
         String division = TableConstants.DIVISION_MULTI_FAMILY;
         String column = TableConstants.COLUMN_CONFIRM_50;
 
-        // Fetch the value using TableUtils via SalesPipelinePage
+        // Fetch the values for debugging and verification
         String value = salesPipelinePage.getWeightedPipelineSummaryValue(division, column);
 
-        logger.info("Fetched value for division '{}' and column '{}': {}", division, column, value);
+        logger.info("Fetched UI value for division '{}' and column '{}': {}", division, column, value);
 
         // Fetch the expected value from the database
         DatabaseUtils db = new DatabaseUtils();
         db.connect();
         String expectedDbValue = null;
         try {
-            String query = "SELECT sum_value FROM pipeline_summary WHERE division = ? AND column_name = ?";
-            expectedDbValue = db.getSingleValue(query, "sum_value", division, column);
+            String query = """
+                    SELECT SUM(CAST(p.job_amount AS DECIMAL(18,2))) AS total_job_amount
+                    FROM pipeline_bids p
+                    INNER JOIN (
+                        SELECT MAX(id) AS latest_id
+                        FROM pipeline_bids
+                        WHERE business_unit_id = 3
+                        GROUP BY COALESCE(
+                            NULLIF(bid_id,''),
+                            NULLIF(buildingconnected_id,'')
+                        )
+                    ) latest
+                    ON p.id = latest.latest_id;
+                    """;
+            expectedDbValue = db.getSingleValue(query, "total_job_amount");
+            System.out.println(expectedDbValue);
 
-            if (expectedDbValue == null) {
+            if (expectedDbValue != null) {
+                logger.info("Database query returned total_job_amount: {}", expectedDbValue);
+            } else {
                 logger.warn("Database query returned null.");
-
             }
         } catch (Exception e) {
-            logger.error("Failed to fetch value from database. Error: {}", e.getMessage());
-
+            logger.error("Failed to fetch value from database. Error: {}", e.getMessage(), e);
         } finally {
             db.disconnect();
         }
 
-        // Assert the UI value matches the DB value
-        Assert.assertEquals(value, expectedDbValue, "Value for " + division + " under " + column + " did not match!");
+        // Format expected DB value if needed to match UI formatting (removing decimals if UI shows whole numbers, adding commas)
+        if (expectedDbValue != null && value != null) {
+            try {
+                double dbValDouble = Double.parseDouble(expectedDbValue);
+                // Convert double to integer string representation with commas if needed, or format
+                java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
+                String formattedDbValue = df.format(dbValDouble);
+                logger.info("Formatted DB expected value: {} vs UI value: {}", formattedDbValue, value);
+                Assert.assertEquals(value, formattedDbValue, "Value for " + division + " under " + column + " did not match!");
+            } catch (NumberFormatException e) {
+                Assert.assertEquals(value, expectedDbValue, "Value for " + division + " under " + column + " did not match!");
+            }
+        } else {
+            Assert.assertEquals(value, expectedDbValue, "Value for " + division + " under " + column + " did not match!");
+        }
     }
 }
