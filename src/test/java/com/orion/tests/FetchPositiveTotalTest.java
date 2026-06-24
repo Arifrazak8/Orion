@@ -20,15 +20,15 @@ public class FetchPositiveTotalTest extends BaseTest {
         logger.info("Navigating to: {}", pivotUrl);
         driver.get(pivotUrl);
 
-        PivotReportPage pivotPage = new PivotReportPage(driver);
+        // PivotReportPage pivotPage = new PivotReportPage(driver);
         // 2. Select filters
         // logger.info("Selecting Business Unit: MULTI_FAMILY");
         // pivotPage.clickClearFilter();
         // try { Thread.sleep(2000); } catch (Exception e) {} // Wait for clear filter reload
-        
+
         // pivotPage.selectBusinessUnit(PivotReportPage.BusinessUnit.MULTI_FAMILY);
         // try { Thread.sleep(1000); } catch (Exception e) {} // Wait for select2 reload
-        
+
         // logger.info("Selecting Duration: LAST_THIRTY_DAYS");
         // pivotPage.selectDuration(PivotReportPage.DurationType.LAST_THIRTY_DAYS);
         // try { Thread.sleep(1000); } catch (Exception e) {} // Wait for select2 reload

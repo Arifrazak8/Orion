@@ -2,8 +2,6 @@ package com.orion.tests;
 
 import com.orion.pages.PivotReportPage;
 import com.orion.utils.DatabaseUtils;
-import com.orion.utils.TableUtils;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import org.apache.logging.log4j.LogManager;
@@ -46,14 +44,14 @@ public class PivotReportPositiveTableTest extends BaseTest {
         try {
             Thread.sleep(1000);
         } catch (Exception e) {
-        } 
+        }
 
         pivotPage.clickGenerateReport();
 
         Thread.sleep(10000);
 
         logger.info("Toggling 'Treat LOI as Awarded' to true");
-        
+
         WebElement toggleInput = driver.findElement(By.xpath("//label[@for='toggleLOI']"));
         toggleInput.click();
 
