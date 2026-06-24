@@ -1,7 +1,0 @@
-com\orion\utils\ExcelUtils.class
-com\orion\utils\ExtentReportManager.class
-com\orion\utils\ScreenshotUtils.class
-com\orion\pages\DashboardPage.class
-com\orion\utils\ConfigReader.class
-com\orion\pages\LoginPage.class
-com\orion\base\BasePage.class

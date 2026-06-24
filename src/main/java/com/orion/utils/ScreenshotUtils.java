@@ -15,8 +15,10 @@ public class ScreenshotUtils {
     private static final Logger logger = LogManager.getLogger(ScreenshotUtils.class);
 
     /**
-     * Captures a screenshot of the current browser state and saves it to the configured directory.
-     * @param driver The active WebDriver instance.
+     * Captures a screenshot of the current browser state and saves it to the
+     * configured directory.
+     * 
+     * @param driver         The active WebDriver instance.
      * @param screenshotName The base name for the screenshot file.
      * @return The absolute path to the saved screenshot file, or null if failed.
      */
@@ -28,7 +30,7 @@ public class ScreenshotUtils {
 
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String folderPath = ConfigReader.getProperty("screenshot.path", "./screenshots/");
-        
+
         // Ensure folder ends with / or \
         if (!folderPath.endsWith("/") && !folderPath.endsWith("\\")) {
             folderPath += "/";
@@ -50,7 +52,7 @@ public class ScreenshotUtils {
             TakesScreenshot ts = (TakesScreenshot) driver;
             File sourceFile = ts.getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(sourceFile, destinationFile);
-            
+
             String absolutePath = destinationFile.getAbsolutePath();
             logger.info("Screenshot captured and saved to: {}", absolutePath);
             return absolutePath;

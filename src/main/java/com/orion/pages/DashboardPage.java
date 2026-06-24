@@ -1,31 +1,15 @@
 package com.orion.pages;
 
 import com.orion.base.BasePage;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class DashboardPage extends BasePage {
 
-     WebDriver driver;
-     private final By crmPageHeader = By.id("page-header");
-     private final By internetSecureAreaHeader = By.cssSelector("h2");
-     private final By internetSecureAreaLogoutLink = By.cssSelector("a[href='/logout']");
-     private final By internetSecureAreaFlashMessage = By.id("flash");
-     private final By weightedPipelineSummaryHeaderBy = By.xpath("//h2[contains(.,'Weighted Pipeline Summary')]");
-     private final By weightedPipelineSummaryTableFooterRowsBy = By.xpath("//h2[contains(.,'Weighted Pipeline Summary')]/ancestor::*[contains(@class,'card-wrp')]//tfoot//tr");
-     private final By weightedPipelineSummaryTableBodyRowsBy = By.xpath("//h2[contains(.,'Weighted Pipeline Summary')]/ancestor::*[contains(@class,'card-wrp')]//tbody/tr");
-     private final By nonWeightedPipelineSummaryHeaderBy = By.xpath("//h2[contains(.,'Non-Weighted Pipeline Summary')]");
-     private final By nonWeightedPipelineSummaryTableFooterRowsBy = By.xpath("//h2[contains(.,'Non-Weighted Pipeline Summary')]/ancestor::*[contains(@class,'card-wrp')]//tfoot//tr");
-     private final By nonWeightedPipelineSummaryTableBodyRowsBy = By.xpath("//h2[contains(.,'Non-Weighted Pipeline Summary')]/ancestor::*[contains(@class,'card-wrp')]//tbody/tr");
+    // Locators for dashboard elements
+    private final By secureAreaHeader = By.cssSelector("h2");
+    private final By logoutButton = By.cssSelector("a[href='/logout']");
+    private final By flashMessage = By.id("flash");
 
     public DashboardPage(WebDriver driver) {
         super(driver);
