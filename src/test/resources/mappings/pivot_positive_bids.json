@@ -1,0 +1,30 @@
+{
+  "name": "pivot_positive_bids",
+  "page": "Pivot Report — Positive Bids",
+  "tableIdentifier": "positive-table",
+  "queryName": "pivot_positive_total",
+  "rowIdentifierUiColumn": "Bid Name",
+  "rowIdentifierDbColumn": "bid_name",
+  "columnMappings": [
+    {
+      "uiColumn": "Job Amount",
+      "dbColumn": "job_amount",
+      "valueTransformer": "currency"
+    },
+    {
+      "uiColumn": "Status",
+      "dbColumn": "status_label",
+      "valueTransformer": "text"
+    },
+    {
+      "uiColumn": "Contact Name",
+      "dbColumn": "contact_name",
+      "valueTransformer": "text"
+    },
+    {
+      "uiColumn": "Business Unit",
+      "dbColumn": "business_unit_name",
+      "valueTransformer": "text"
+    }
+  ]
+}

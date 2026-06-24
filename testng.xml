@@ -20,4 +20,20 @@
             <class name="com.orion.tests.DatabaseValidationTest"/>
         </classes>
     </test>
+
+    <!-- Pivot Report Table Validation Tests -->
+    <test name="Pivot Report Tests">
+        <classes>
+            <class name="com.orion.tests.PivotReportTest"/>
+            <class name="com.orion.tests.PivotReportPositiveTableTest"/>
+            <class name="com.orion.tests.FetchPositiveTotalTest"/>
+        </classes>
+    </test>
+
+    <!-- Sales Pipeline Tests -->
+    <test name="Sales Pipeline Tests">
+        <classes>
+            <class name="com.orion.tests.TestScenario"/>
+        </classes>
+    </test>
 </suite>

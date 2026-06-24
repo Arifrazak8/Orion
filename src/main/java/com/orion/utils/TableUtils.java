@@ -116,6 +116,67 @@ public class TableUtils {
     }
 
     /**
+     * Gets all column header names from the table's thead.
+     *
+     * @return List of header text values in display order.
+     */
+    public List<String> getHeaders() {
+        return executeWithRetry(() -> {
+            List<WebElement> headers = tableElement.findElements(By.xpath(".//thead//th | .//thead//td"));
+            return headers.stream()
+                    .map(h -> h.getText().trim())
+                    .filter(text -> !text.isEmpty())
+                    .collect(Collectors.toList());
+        });
+    }
+
+    /**
+     * Returns the number of data rows in the table body.
+     *
+     * @return Row count (excluding header and footer rows).
+     */
+    public int getRowCount() {
+        return executeWithRetry(() -> {
+            List<WebElement> rows = tableElement.findElements(By.xpath(".//tbody/tr"));
+            return rows.size();
+        });
+    }
+
+    /**
+     * Reads footer row data as a Map of ColumnName → CellValue.
+     * Looks for rows in tfoot, or falls back to tbody rows with
+     * common footer identifiers.
+     *
+     * @return Map of column names to footer values, or empty map if no footer.
+     */
+    public Map<String, String> getFooterData() {
+        return executeWithRetry(() -> {
+            Map<String, String> footerData = new LinkedHashMap<>();
+            List<WebElement> headers = tableElement.findElements(By.xpath(".//thead//th | .//thead//td"));
+
+            // Try tfoot first
+            List<WebElement> footerCells = tableElement.findElements(By.xpath(".//tfoot//td | .//tfoot//th"));
+            if (footerCells.isEmpty()) {
+                // Fallback: look for the last tbody row
+                List<WebElement> bodyRows = tableElement.findElements(By.xpath(".//tbody/tr"));
+                if (!bodyRows.isEmpty()) {
+                    WebElement lastRow = bodyRows.get(bodyRows.size() - 1);
+                    footerCells = lastRow.findElements(By.xpath("./td | ./th"));
+                }
+            }
+
+            for (int i = 0; i < Math.min(headers.size(), footerCells.size()); i++) {
+                String colName = headers.get(i).getText().trim();
+                String cellVal = footerCells.get(i).getText().trim();
+                if (!colName.isEmpty()) {
+                    footerData.put(colName, cellVal);
+                }
+            }
+            return footerData;
+        });
+    }
+
+    /**
      * Specific helper to fetch a value from the Grand Total row.
      */
     public String getGrandTotalValue(String columnName) {

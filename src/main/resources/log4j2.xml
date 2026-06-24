@@ -1,13 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
+
+    <Properties>
+        <Property name="LOG_DIR">./logs</Property>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+        <Property name="CONSOLE_PATTERN">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+    </Properties>
+
     <Appenders>
+        <!-- Console appender (preserved from original) -->
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <PatternLayout pattern="${CONSOLE_PATTERN}"/>
         </Console>
+
+        <!-- Rolling file appender — date-based rolling, max 30 files -->
+        <RollingFile name="RollingFile"
+                     fileName="${LOG_DIR}/orion-automation.log"
+                     filePattern="${LOG_DIR}/orion-automation-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+
+        <!-- Separate database query log -->
+        <RollingFile name="DatabaseLog"
+                     fileName="${LOG_DIR}/db-queries.log"
+                     filePattern="${LOG_DIR}/db-queries-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="5MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
     </Appenders>
+
     <Loggers>
+        <!-- Database package logger — captures all query activity at DEBUG -->
+        <Logger name="com.orion.database" level="debug" additivity="true">
+            <AppenderRef ref="DatabaseLog"/>
+        </Logger>
+
+        <!-- Validation package — INFO for comparison results -->
+        <Logger name="com.orion.validation" level="info" additivity="true"/>
+
+        <!-- Reporting package -->
+        <Logger name="com.orion.reporting" level="info" additivity="true"/>
+
+        <!-- Selenium internals — reduce noise -->
+        <Logger name="org.openqa.selenium" level="warn" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <!-- HikariCP — reduce noise -->
+        <Logger name="com.zaxxer.hikari" level="warn" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <!-- Root logger -->
         <Root level="info">
             <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
         </Root>
     </Loggers>
 </Configuration>
